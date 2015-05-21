@@ -21,13 +21,38 @@ angular.module('starter', ['ionic'])
 })
 */
 
-angular.module('todo', ['ionic'])
+angular.module("todo", ["ionic"])
 
-.controller('TodoCtrl', function($scope) {
-  $scope.tasks = [
-    { title: 'Collect coins' },
-    { title: 'Step on mushrooms' },
-    { title: 'Get high enough to grab the flag' },
-    { title: 'Find the Princess' }
-  ];
+.controller("TodoCtrl", function($scope, $ionicModal) {
+  
+  // instantiate empty array to hold tasks added to app
+  $scope.tasks = [];
+
+  // create and load new task modal
+  $ionicModal.fromTemplateUrl("new-task.html", function(modal) {
+    $scope.taskModal = modal;
+  }, {
+    scope: $scope,
+    animation: "slide-in-up"
+  });
+
+  // called when form is submitted
+  $scope.createTask = function(task) {
+    $scope.tasks.push({
+      title: task.title
+    });
+    $scope.taskModal.hide();
+    task.title = "";
+  };
+
+  // open new task modal
+  $scope.newTask = function() {
+    $scope.taskModal.show();
+  };
+
+  // close new task modal
+  $scope.closeNewTask = function() {
+    $scope.taskModal.hide();
+  };
+
 });
